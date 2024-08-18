@@ -1,5 +1,5 @@
 type Props = {
-  addData: () => void
+  addData: () => Promise<void>
   handleTitleChange: (title: string) => void
   handleTextChange: (text: string) => void
   titleValue: string
