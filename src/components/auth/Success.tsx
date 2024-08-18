@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import { auth, db, storage } from "../../firebase"
 import { addDoc, collection, onSnapshot, query } from "firebase/firestore"
+import { v4 as uuidv4 } from "uuid"
 
 import { Post } from "../Post"
 import { Add } from "../Add"
@@ -35,17 +36,8 @@ export function Success() {
   const addData = async () => {
     try {
       if (image) {
-        const S =
-          "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" //ランダムな文字列を作るための候補62文字
-        const N = 16
-        const randomChar = Array.from(
-          crypto.getRandomValues(new Uint32Array(N))
-        ) //乱数を生成してくれるもので0からランダムな数字が16個選ばれる
-          .map((n) => S[n % S.length])
-          .join("")
-
-        const fileName = randomChar + "_" + image.name
-
+        const uuid = uuidv4()
+        const fileName = uuid + "_" + image.name
         const uploadImage = uploadBytesResumable(
           ref(storage, `images/${fileName}`),
           image
